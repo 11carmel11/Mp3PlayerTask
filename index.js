@@ -48,8 +48,21 @@ const player = {
     { id: 5, name: 'Israeli', songs: [4, 5] },
   ],
   playSong(song) {
-    console.log(/* your code here */)
+    console.log("Playing " + song.title + "from " + song.album + "by " + song.artist +" | " + mmssFormat(song.duration) + ".")
   },
+}
+
+//function that makes the mm:ss format
+function mmssFormat (sec) {
+  let mins = Math.floor(sec / 60)
+  let secs = sec % 60;
+  if (mins < 10) {
+    mins = "0" + mins;
+  }
+  if (secs < 10) {
+    secs = "0" + secs;
+  }
+  return `${mins}:${secs}`
 }
 
 function playSong(id) {
