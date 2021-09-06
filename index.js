@@ -87,7 +87,7 @@ function removeSong(id) {
   let index = player.songs.indexOf(getSongById(id));
   player.songs.splice(index, 1);
   for (let i = 0; i < 2; i++) {
-    for (let j = 0; j < player.playlists[i].length; j++) {
+    for (let j = 0; j < player.playlists[i].songs.length; j++) {
       if (player.playlists[i].songs.indexOf(id) >= 0) {
         player.playlists[i].songs.splice(j, 1);
         return player.playlists[i].songs;
