@@ -86,6 +86,28 @@ function getSongById (id) {
   }
 }
 
+ //function to sort by title at searchByQuery
+ function compareTitle( a, b ) {
+  if ( a.title < b.title ){
+    return -1;
+  }
+  if ( a.title > b.title ){
+    return 1;
+  }
+  return 0;
+}
+
+ //function to sort by title at searchByQuery
+ function compareName( a, b ) {
+  if ( a.name < b.name ){
+    return -1;
+  }
+  if ( a.name > b.name ){
+    return 1;
+  }
+  return 0;
+}
+
 //function that takes id and returns the playlist object
 function getPLById (id) {
   let i = 0;
@@ -212,7 +234,25 @@ function playlistDuration(id) {
 }
 
 function searchByQuery(query) {
-  // your code here
+  let QUERY = query.toUpperCase();
+  const obj = {songs:[], playlists:[]};
+  for (let song of player.songs) {
+    let TITLE = song.title.toLocaleUpperCase();
+    let ALBUM = song.album.toLocaleUpperCase();
+    let ARTIST = song.artist.toLocaleUpperCase();
+    if (TITLE.includes(QUERY) || ALBUM.includes(QUERY) || ARTIST.includes(QUERY)) {
+      obj.songs.push(song);
+    }
+  }
+  for (let pl of player.playlists) {
+    let NAME = pl.name.toLocaleUpperCase();
+    if (NAME.includes(QUERY)) {
+      obj.playlists.push(pl);
+    }
+  }
+  obj.songs.sort(compareTitle);
+  obj.playlists.sort(compareName);
+  return obj;
 }
 
 function searchByDuration(duration) {
