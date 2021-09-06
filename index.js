@@ -181,7 +181,17 @@ function playPlaylist(id) {
 }
 
 function editPlaylist(playlistId, songId) {
-  // your code here
+  let PL = getPLById(playlistId);
+  let song = getSongById(songId);
+  if (PL.songs.indexOf(songId) >= 0) { //exist
+    if (PL.songs.length === 1) {
+      player.playlists.splice(player.playlists.indexOf(PL), 1);
+    } else {
+      PL.songs.splice(PL.songs.indexOf(songId), 1)
+    }
+  } else {
+    PL.songs.push(songId);
+  }
 }
 
 function playlistDuration(id) {
