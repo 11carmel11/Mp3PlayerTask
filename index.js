@@ -174,7 +174,10 @@ function createPlaylist(name, id) {
 }
 
 function playPlaylist(id) {
-  // your code here
+  let playlistObj = getPLById(id);
+  for (let i = 0; i < playlistObj.songs.length; i++) {
+    player.playSong(getSongById(playlistObj.songs[i]))
+  }
 }
 
 function editPlaylist(playlistId, songId) {
