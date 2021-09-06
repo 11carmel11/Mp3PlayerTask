@@ -151,7 +151,26 @@ function removePlaylist(id) {
 }
 
 function createPlaylist(name, id) {
-  // your code here
+  for (let i = 0; i < player.playlists.length; i++) {
+    if (player.playlists[i].id === id) {
+      throw "taken id";
+    }
+  }
+  if (!id) {
+    id = 2;
+  }
+  for (let i = 0; i < player.playlists.length; i++) {
+    if (player.playlists[i].id === id) {
+      id++
+    }
+  }
+  let newPL = {
+    'id':id,
+    'name':name,
+    'songs':[]
+  }
+  player.playlists.push(newPL);
+  return id;
 }
 
 function playPlaylist(id) {
