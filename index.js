@@ -51,6 +51,7 @@ const player = {
     console.log("Playing " + song['title'] + " from " + song['album'] + " by " + song['artist'] + " | " + mmssFormat(song['duration']) + ".");
   },
 }
+
 //function that turns mm:ss to seconds
 function mmssToSec (str) {
   let arr = str.split(":");
@@ -69,7 +70,8 @@ function mmssFormat (sec) {
   }
   return `${mins}:${secs}`
 }
-//function that takes id and return the song object
+
+//function that takes id and returns the song object
 function getSongById (id) {
   let i = 0;
   let k = undefined;
@@ -84,6 +86,21 @@ function getSongById (id) {
   }
 }
 
+//function that takes id and returns the playlist object
+function getPLById (id) {
+  let i = 0;
+  let k = undefined;
+  for (i; i < player.playlists.length; i++) {
+    if (player.playlists[i].id === id) {
+      k = 8;
+      return (player.playlists[i]);
+    }
+  } 
+  if (k === undefined) {
+    throw "error: ID is not exist";
+  }
+}
+
 function playSong(id) {
 player.playSong(getSongById(id))
 }
@@ -91,7 +108,7 @@ player.playSong(getSongById(id))
 function removeSong(id) {
   let index = player.songs.indexOf(getSongById(id));
   player.songs.splice(index, 1);
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < player.playlists.length; i++) {
     for (let j = 0; j < player.playlists[i].songs.length; j++) {
       if (player.playlists[i].songs.indexOf(id) >= 0) {
         player.playlists[i].songs.splice(j, 1);
@@ -128,7 +145,9 @@ function addSong(title, album, artist, duration, id) {
 }
 
 function removePlaylist(id) {
-  // your code here
+  let index = player.playlists.indexOf(getPLById(id));
+  player.playlists.splice(index, 1);
+  return player.playlists;
 }
 
 function createPlaylist(name, id) {
