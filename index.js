@@ -181,8 +181,8 @@ function playPlaylist(id) {
 }
 
 function editPlaylist(playlistId, songId) {
-  let PL = getPLById(playlistId);
-  let song = getSongById(songId);
+  const PL = getPLById(playlistId);
+  const song = getSongById(songId);
   if (PL.songs.indexOf(songId) >= 0) { //exist
     if (PL.songs.length === 1) {
       player.playlists.splice(player.playlists.indexOf(PL), 1);
@@ -195,7 +195,20 @@ function editPlaylist(playlistId, songId) {
 }
 
 function playlistDuration(id) {
-  // your code here
+  const songs = getPLById(id).songs;
+  let durations = [];
+  let sum = 0;
+  for (let i = 0; i < player.songs.length; i++) {
+    for (let j = 0; j < songs.length; j++) {
+      if (songs[j] === player.songs[i].id) {
+        durations.push(player.songs[i].duration);
+      }
+    }
+  }
+  for (let i = 0; i < durations.length; i++) {
+    sum += durations[i];
+  }
+  return sum;
 }
 
 function searchByQuery(query) {
