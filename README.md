@@ -1,6 +1,6 @@
 # MP3 Player - Second Weekend Assignment
 You are going to implement an MP3 player.
-
+ 
 
 ## Instructions
 1. Fork this repo into your account.
@@ -63,7 +63,7 @@ Your work will be graded based on the following considerations:
 - The number of automatic tests you pass
 - Readable and ordered code
   - Spacing & indentation
-  - Indicative vairable/function names
+  - Indicative variable/function names
   - Comments (where necessary)
 - Proper use of Git
   - Granular commits

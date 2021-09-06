@@ -48,7 +48,7 @@ const player = {
     { id: 5, name: 'Israeli', songs: [4, 5] },
   ],
   playSong(song) {
-    console.log("Playing " + song.title + "from " + song.album + "by " + song.artist +" | " + mmssFormat(song.duration) + ".")
+    console.log("Playing " + song['title'] + " from " + song['album'] + " by " + song['artist'] + " | " + mmssFormat(song['duration']) + ".");
   },
 }
 
@@ -64,15 +64,38 @@ function mmssFormat (sec) {
   }
   return `${mins}:${secs}`
 }
+//funnction that takes id and return the song object
+function getSongById (id) {
+  let i = 0;
+  let k = undefined;
+  for (i; i < player.songs.length; i++) {
+    if (player.songs[i].id === id) {
+      k = 8;
+      return (player.songs[i]);
+    }
+  } 
+  if (k === undefined) {
+    throw "error: ID is not exist"
+  }
+}
 
 function playSong(id) {
-  // your code here
+player.playSong(getSongById(id))
 }
 
 function removeSong(id) {
-  // your code here
+  let index = player.songs.indexOf(getSongById(id));
+  player.songs.splice(index, 1);
+  for (let i = 0; i < 2; i++) {
+    for (let j = 0; j < player.playlists[i].length; j++) {
+      if (player.playlists[i].songs.indexOf(id) >= 0) {
+        player.playlists[i].songs.splice(j, 1);
+        return player.playlists[i].songs;
+      }
+    }
+  }
+  return player.songs;
 }
-
 function addSong(title, album, artist, duration, id) {
   // your code here
 }
