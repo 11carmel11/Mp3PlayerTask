@@ -51,6 +51,11 @@ const player = {
     console.log("Playing " + song['title'] + " from " + song['album'] + " by " + song['artist'] + " | " + mmssFormat(song['duration']) + ".");
   },
 }
+//function that turns mm:ss to seconds
+function mmssToSec (str) {
+  let arr = str.split(":");
+  return (parseInt(arr[0]) * 60 + parseInt(arr[1]));
+}
 
 //function that makes the mm:ss format
 function mmssFormat (sec) {
@@ -64,7 +69,7 @@ function mmssFormat (sec) {
   }
   return `${mins}:${secs}`
 }
-//funnction that takes id and return the song object
+//function that takes id and return the song object
 function getSongById (id) {
   let i = 0;
   let k = undefined;
@@ -75,7 +80,7 @@ function getSongById (id) {
     }
   } 
   if (k === undefined) {
-    throw "error: ID is not exist"
+    throw "error: ID is not exist";
   }
 }
 
@@ -96,8 +101,30 @@ function removeSong(id) {
   }
   return player.songs;
 }
+
 function addSong(title, album, artist, duration, id) {
-  // your code here
+  for (let i = 0; i < player.songs.length; i++) {
+    if (player.songs[i].id === id) {
+      throw "taken id"
+    }
+  }
+  if (!id) {
+    id = 6;
+  }
+  for (let i = 0; i < player.songs.length; i++) {
+    if (player.songs[i].id === id) {
+      id++
+    }
+  }
+  let newSong = {
+    'id':id,
+    'title':title,
+    'album':album,
+    'artist':artist,
+    'duration':mmssToSec(duration)
+  }
+  player.songs.push(newSong);
+  return id;
 }
 
 function removePlaylist(id) {
