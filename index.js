@@ -40,7 +40,7 @@ const player = {
       title: 'As a Stone',
       album: 'Show Us What You Got',
       artist: 'Full Trunk',
-      duration: 259
+      duration: 259,
     },
   ],
   playlists: [
@@ -48,105 +48,114 @@ const player = {
     { id: 5, name: 'Israeli', songs: [4, 5] },
   ],
   playSong(song) {
-    console.log("Playing " + song['title'] + " from " + song['album'] + " by " + song['artist'] + " | " + mmssFormat(song['duration']) + ".");
+    console.log(
+      'Playing ' +
+        song['title'] +
+        ' from ' +
+        song['album'] +
+        ' by ' +
+        song['artist'] +
+        ' | ' +
+        mmssFormat(song['duration']) +
+        '.'
+    );
   },
-}
+};
 
 //function that turns mm:ss to seconds
-function mmssToSec (str) {
-  let numbers = ['0','1','2','3','4','5','6','7','8','9'];
-  let arr = str.split(":");
+function mmssToSec(str) {
+  let numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  let arr = str.split(':');
   for (let part of arr) {
-    let subArr = part.split("");
+    let subArr = part.split('');
     for (let subPart of subArr) {
       if (!numbers.includes(subPart)) {
-        throw "error";
+        throw 'error';
       }
     }
-  } 
-   if (arr.length === 3) {
-    if (arr[1] > 59 || arr[2] > 59) throw "error";
-    return (parseInt(arr[0]) * 3600 + parseInt(arr[1]) * 60 + parseInt(arr[2]));
-  }else {
-  if (arr[0] > 59 || arr[1] > 59) throw "error";
-  return (parseInt(arr[0]) * 60 + parseInt(arr[1]));    
+  }
+  if (arr.length === 3) {
+    if (arr[1] > 59 || arr[2] > 59) throw 'error';
+    return parseInt(arr[0]) * 3600 + parseInt(arr[1]) * 60 + parseInt(arr[2]);
+  } else {
+    if (arr[0] > 59 || arr[1] > 59) throw 'error';
+    return parseInt(arr[0]) * 60 + parseInt(arr[1]);
   }
 }
 
 //function that makes the mm:ss format
-function mmssFormat (sec) {
+function mmssFormat(sec) {
   let hours = Math.floor(sec / 3600);
-  let mins = Math.floor((sec - (hours * 3600)) / 60);
+  let mins = Math.floor((sec - hours * 3600) / 60);
   let secs = sec % 60;
   if (hours < 10) {
-    hours = "0" + hours;
+    hours = '0' + hours;
   }
   if (mins < 10) {
-    mins = "0" + mins;
+    mins = '0' + mins;
   }
   if (secs < 10) {
-    secs = "0" + secs;
+    secs = '0' + secs;
   }
-  if (parseInt(hours) > 0){
+  if (parseInt(hours) > 0) {
     return `${hours}:${mins}:${secs}`;
   } else return `${mins}:${secs}`;
-  
 }
 
 //function that takes id and returns the song object
-function getSongById (id) {
+function getSongById(id) {
   let i = 0;
   let existId = false;
   for (i; i < player.songs.length; i++) {
     if (player.songs[i].id === id) {
       existId = true;
-      return (player.songs[i]);
+      return player.songs[i];
     }
-  } 
+  }
   if (!existId) {
-    throw "error: ID is not exist";
+    throw 'error: ID is not exist';
   }
 }
 
- //function to sort by title at searchByQuery
- function compareTitle( a, b ) {
-  if ( a.title < b.title ){
+//function to sort by title at searchByQuery
+function compareTitle(a, b) {
+  if (a.title < b.title) {
     return -1;
   }
-  if ( a.title > b.title ){
+  if (a.title > b.title) {
     return 1;
   }
   return 0;
 }
 
- //function to sort by title at searchByQuery
- function compareName( a, b ) {
-  if ( a.name < b.name ){
+//function to sort by title at searchByQuery
+function compareName(a, b) {
+  if (a.name < b.name) {
     return -1;
   }
-  if ( a.name > b.name ){
+  if (a.name > b.name) {
     return 1;
   }
   return 0;
 }
 
 //function that takes id and returns the playlist object
-function getPLById (id) {
+function getPLById(id) {
   let i = 0;
   let existId = false;
   for (i; i < player.playlists.length; i++) {
     if (player.playlists[i].id === id) {
       existId = true;
-      return (player.playlists[i]);
+      return player.playlists[i];
     }
-  } 
+  }
   if (!existId) {
-    throw "error: ID is not exist";
+    throw 'error: ID is not exist';
   }
 }
 
 function playSong(id) {
-  player.playSong(getSongById(id))
+  player.playSong(getSongById(id));
 }
 
 function removeSong(id) {
@@ -166,7 +175,7 @@ function removeSong(id) {
 function addSong(title, album, artist, duration, id) {
   for (let i = 0; i < player.songs.length; i++) {
     if (player.songs[i].id === id) {
-      throw "taken id";
+      throw 'taken id';
     }
   }
   if (!id) {
@@ -178,11 +187,11 @@ function addSong(title, album, artist, duration, id) {
     }
   }
   let newSong = {
-    'id':id,
-    'title':title,
-    'album':album,
-    'artist':artist,
-    'duration':mmssToSec(duration)
+    id: id,
+    title: title,
+    album: album,
+    artist: artist,
+    duration: mmssToSec(duration),
   };
   player.songs.push(newSong);
   return id;
@@ -197,7 +206,7 @@ function removePlaylist(id) {
 function createPlaylist(name, id) {
   for (let i = 0; i < player.playlists.length; i++) {
     if (player.playlists[i].id === id) {
-      throw "taken id";
+      throw 'taken id';
     }
   }
   if (!id) {
@@ -209,9 +218,9 @@ function createPlaylist(name, id) {
     }
   }
   let newPlaylist = {
-    'id':id,
-    'name':name,
-    'songs':[]
+    id: id,
+    name: name,
+    songs: [],
   };
   player.playlists.push(newPlaylist);
   return id;
@@ -227,7 +236,8 @@ function playPlaylist(id) {
 function editPlaylist(playlistId, songId) {
   const playlist = getPLById(playlistId);
   getSongById(songId); //throws if the id doesn't exist
-  if (playlist.songs.indexOf(songId) >= 0) { //exist
+  if (playlist.songs.indexOf(songId) >= 0) {
+    //exist
     if (playlist.songs.length === 1) {
       player.playlists.splice(player.playlists.indexOf(playlist), 1);
     } else {
@@ -257,12 +267,16 @@ function playlistDuration(id) {
 
 function searchByQuery(query) {
   let upperCaseQuery = query.toUpperCase();
-  const obj = {songs:[], playlists:[]};
+  const obj = { songs: [], playlists: [] };
   for (let song of player.songs) {
     let upperCaseTitle = song.title.toLocaleUpperCase();
     let upperCaseAlbum = song.album.toLocaleUpperCase();
     let upperCaseArtist = song.artist.toLocaleUpperCase();
-    if (upperCaseTitle.includes(upperCaseQuery) || upperCaseAlbum.includes(upperCaseQuery) || upperCaseArtist.includes(upperCaseQuery)) {
+    if (
+      upperCaseTitle.includes(upperCaseQuery) ||
+      upperCaseAlbum.includes(upperCaseQuery) ||
+      upperCaseArtist.includes(upperCaseQuery)
+    ) {
       obj.songs.push(song);
     }
   }
@@ -274,7 +288,7 @@ function searchByQuery(query) {
   }
   obj.songs.sort(compareTitle);
   obj.playlists.sort(compareName);
-  return obj
+  return obj;
 }
 
 function searchByDuration(duration) {
@@ -282,15 +296,15 @@ function searchByDuration(duration) {
   let range = null;
   let secs;
   try {
-     secs = mmssToSec(duration);  
+    secs = mmssToSec(duration);
   } catch {
-    return "please provide duration in mm:ss format";
+    return 'please provide duration in mm:ss format';
   }
   let comparisonArray = [secs];
   for (let song of player.songs) {
     comparisonArray.push(song.duration);
-    comparisonArray.sort((a, b) => (a - b));
-    if ((comparisonArray[1] - comparisonArray[0]) < range || range === null) {
+    comparisonArray.sort((a, b) => a - b);
+    if (comparisonArray[1] - comparisonArray[0] < range || range === null) {
       range = comparisonArray[1] - comparisonArray[0];
       closest = song;
     }
@@ -299,14 +313,14 @@ function searchByDuration(duration) {
   for (let list of player.playlists) {
     let listLong = playlistDuration(list.id);
     comparisonArray.push(listLong);
-    comparisonArray.sort((a, b) => (a - b));
-    if ((comparisonArray[1] - comparisonArray[0]) < range || range === null) {
+    comparisonArray.sort((a, b) => a - b);
+    if (comparisonArray[1] - comparisonArray[0] < range || range === null) {
       range = comparisonArray[1] - comparisonArray[0];
       closest = list;
     }
-    comparisonArray.splice(comparisonArray.indexOf(listLong), 1)
+    comparisonArray.splice(comparisonArray.indexOf(listLong), 1);
   }
-  return closest; 
+  return closest;
 }
 
 module.exports = {
@@ -321,4 +335,4 @@ module.exports = {
   playlistDuration,
   searchByQuery,
   searchByDuration,
-}
+};
