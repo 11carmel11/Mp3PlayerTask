@@ -73,7 +73,7 @@ describe('Player Tests', () => {
     jest.clearAllMocks()
   })
 
-  it.only('playSong should console.log in the correct format', () => {
+  it('playSong should console.log in the correct format', () => {
     const spy = jest.spyOn(console, 'log')
     playSong(mockSong1.id)
     expect(spy).toHaveBeenCalledWith(
@@ -81,36 +81,36 @@ describe('Player Tests', () => {
     )
   })
 
-  it.only('playSong should throw for non-existent ID', () => {
+  it('playSong should throw for non-existent ID', () => {
     expect(() => playSong(mockNonExistentSongId)).toThrow()
   })
 
-  it.only('removeSong should remove the song from player', () => {
+  it('removeSong should remove the song from player', () => {
     removeSong(mockSong1.id)
     expect(player.songs).toEqual([mockSong2, mockSong4])
   })
 
-  it.only('removeSong should remove the song from all playlists', () => {
+  it('removeSong should remove the song from all playlists', () => {
     removeSong(mockSong1.id)
     expect(player.playlists[0].songs).toEqual([mockSong2.id])
   })
 
-  it.only('removeSong should throw for non-existent ID', () => {
+  it('removeSong should throw for non-existent ID', () => {
     expect(() => removeSong(mockNonExistentSongId)).toThrow()
   })
 
-  it.only('addSong should add a new song to the player', () => {
+  it('addSong should add a new song to the player', () => {
     addSong(...mockSong3Details)
     expect(player.songs).toEqual([...mockPlayer.songs, mockSong3])
   })
 
-  it.only('addSong should generate a new unique ID when it is not supplied', () => {
+  it('addSong should generate a new unique ID when it is not supplied', () => {
     const newSongId = addSong(...mockSong3Details.slice(0, -1))
     expect(newSongId).toBeDefined()
     expect(mockPlayer.songs.map(song => song.id).includes(newSongId)).toBe(false)
   })
 
-  it.only('addSong should throw for an ID that is taken', () => {
+  it('addSong should throw for an ID that is taken', () => {
     expect(() => addSong(...mockSong3Details.slice(0, -1), mockSong1.id)).toThrow()
   })
 
