@@ -96,14 +96,14 @@ function mmssFormat (sec) {
 //function that takes id and returns the song object
 function getSongById (id) {
   let i = 0;
-  let k = undefined;
+  let existId = false;
   for (i; i < player.songs.length; i++) {
     if (player.songs[i].id === id) {
-      k = 8;
+      existId = true;
       return (player.songs[i]);
     }
   } 
-  if (k === undefined) {
+  if (!existId) {
     throw "error: ID is not exist";
   }
 }
@@ -133,14 +133,14 @@ function getSongById (id) {
 //function that takes id and returns the playlist object
 function getPLById (id) {
   let i = 0;
-  let k = undefined;
+  let existId = false;
   for (i; i < player.playlists.length; i++) {
     if (player.playlists[i].id === id) {
-      k = 8;
+      existId = true;
       return (player.playlists[i]);
     }
   } 
-  if (k === undefined) {
+  if (!existId) {
     throw "error: ID is not exist";
   }
 }
