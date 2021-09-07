@@ -36,11 +36,11 @@ const player = {
       duration: 270,
     },
     {
+      id: 5,
+      title: 'As a Stone',
       album: 'Show Us What You Got',
       artist: 'Full Trunk',
-      duration: 259,
-      id: 5,
-      title: 'As a Stone'
+      duration: 259
     },
   ],
   playlists: [
@@ -54,18 +54,17 @@ const player = {
 
 //function that turns mm:ss to seconds
 function mmssToSec (str) {
-  let formatProblem;
+  let numbers = ['0','1','2','3','4','5','6','7','8','9'];
   let arr = str.split(":");
   for (let part of arr) {
     let subArr = part.split("");
     for (let subPart of subArr) {
-      if (parseInt(subPart) === parseInt("f")) {
-        formatProblem = true;
+      if (!numbers.includes(subPart)) {
+        throw "error";
       }
     }
-  }
-  if (formatProblem) throw "error";
-  else if (arr.length === 3) {
+  } 
+   if (arr.length === 3) {
     if (arr[1] > 59 || arr[2] > 59) throw "error";
     return (parseInt(arr[0]) * 3600 + parseInt(arr[1]) * 60 + parseInt(arr[2]));
   }else {
@@ -73,7 +72,7 @@ function mmssToSec (str) {
   return (parseInt(arr[0]) * 60 + parseInt(arr[1]));    
   }
 }
-//console.log(mmssToSec("3ee3:21"))
+
 //function that makes the mm:ss format
 function mmssFormat (sec) {
   let hours = Math.floor(sec / 3600);
@@ -257,57 +256,57 @@ function playlistDuration(id) {
 }
 
 function searchByQuery(query) {
-  let QUERY = query.toUpperCase();
+  let upperCaseQuery = query.toUpperCase();
   const obj = {songs:[], playlists:[]};
   for (let song of player.songs) {
-    let TITLE = song.title.toLocaleUpperCase();
-    let ALBUM = song.album.toLocaleUpperCase();
-    let ARTIST = song.artist.toLocaleUpperCase();
-    if (TITLE.includes(QUERY) || ALBUM.includes(QUERY) || ARTIST.includes(QUERY)) {
+    let upperCaseTitle = song.title.toLocaleUpperCase();
+    let upperCaseAlbum = song.album.toLocaleUpperCase();
+    let upperCaseArtist = song.artist.toLocaleUpperCase();
+    if (upperCaseTitle.includes(upperCaseQuery) || upperCaseAlbum.includes(upperCaseQuery) || upperCaseArtist.includes(upperCaseQuery)) {
       obj.songs.push(song);
     }
   }
   for (let pl of player.playlists) {
-    let NAME = pl.name.toLocaleUpperCase();
-    if (NAME.includes(QUERY)) {
+    let upperCaseName = pl.name.toLocaleUpperCase();
+    if (upperCaseName.includes(upperCaseQuery)) {
       obj.playlists.push(pl);
     }
   }
   obj.songs.sort(compareTitle);
   obj.playlists.sort(compareName);
-  return obj;
+  return obj
 }
 
 function searchByDuration(duration) {
   let closest = {};
   let range = null;
-  let secs = mmssToSec(duration);
-  if (secs == parseInt("s")) {
-    //console.log("d")
-    throw "error"
-  } else {
-   let arr = [secs];
+  let secs;
+  try {
+     secs = mmssToSec(duration);  
+  } catch {
+    return "please provide duration in mm:ss format"
+  }
+   let comparisonArray = [secs];
   for (let song of player.songs) {
-    arr.push(song.duration);
-    arr.sort((a, b) => (a - b));
-    if ((arr[1] - arr[0]) < range || range === null) {
-      range = arr[1] - arr[0];
+    comparisonArray.push(song.duration);
+    comparisonArray.sort((a, b) => (a - b));
+    if ((comparisonArray[1] - comparisonArray[0]) < range || range === null) {
+      range = comparisonArray[1] - comparisonArray[0];
       closest = song;
     }
-    arr.splice(arr.indexOf(song.duration), 1);
+    comparisonArray.splice(comparisonArray.indexOf(song.duration), 1);
   }
   for (let list of player.playlists) {
     let listLong = playlistDuration(list.id);
-    arr.push(listLong);
-    arr.sort((a, b) => (a - b));
-    if ((arr[1] - arr[0]) < range || range === null) {
-      range = arr[1] - arr[0];
+    comparisonArray.push(listLong);
+    comparisonArray.sort((a, b) => (a - b));
+    if ((comparisonArray[1] - comparisonArray[0]) < range || range === null) {
+      range = comparisonArray[1] - comparisonArray[0];
       closest = list;
     }
-    arr.splice(arr.indexOf(listLong), 1)
+    comparisonArray.splice(comparisonArray.indexOf(listLong), 1)
   }
   return closest; 
-  }
 }
 
 module.exports = {
