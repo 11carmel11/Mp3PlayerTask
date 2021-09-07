@@ -36,11 +36,11 @@ const player = {
       duration: 270,
     },
     {
-      id: 5,
-      title: 'As a Stone',
       album: 'Show Us What You Got',
       artist: 'Full Trunk',
       duration: 259,
+      id: 5,
+      title: 'As a Stone'
     },
   ],
   playlists: [
@@ -54,21 +54,44 @@ const player = {
 
 //function that turns mm:ss to seconds
 function mmssToSec (str) {
+  let formatProblem;
   let arr = str.split(":");
-  return (parseInt(arr[0]) * 60 + parseInt(arr[1]));
+  for (let part of arr) {
+    let subArr = part.split("");
+    for (let subPart of subArr) {
+      if (parseInt(subPart) === parseInt("f")) {
+        formatProblem = true;
+      }
+    }
+  }
+  if (formatProblem) throw "error";
+  else if (arr.length === 3) {
+    if (arr[1] > 59 || arr[2] > 59) throw "error";
+    return (parseInt(arr[0]) * 3600 + parseInt(arr[1]) * 60 + parseInt(arr[2]));
+  }else {
+  if (arr[0] > 59 || arr[1] > 59) throw "error";
+  return (parseInt(arr[0]) * 60 + parseInt(arr[1]));    
+  }
 }
-
+//console.log(mmssToSec("3ee3:21"))
 //function that makes the mm:ss format
 function mmssFormat (sec) {
-  let mins = Math.floor(sec / 60)
+  let hours = Math.floor(sec / 3600);
+  let mins = Math.floor((sec - (hours * 3600)) / 60);
   let secs = sec % 60;
+  if (hours < 10) {
+    hours = "0" + hours;
+  }
   if (mins < 10) {
     mins = "0" + mins;
   }
   if (secs < 10) {
     secs = "0" + secs;
   }
-  return `${mins}:${secs}`
+  if (parseInt(hours) > 0){
+    return `${hours}:${mins}:${secs}`;
+  } else return `${mins}:${secs}`;
+  
 }
 
 //function that takes id and returns the song object
@@ -256,7 +279,35 @@ function searchByQuery(query) {
 }
 
 function searchByDuration(duration) {
-  // your code here
+  let closest = {};
+  let range = null;
+  let secs = mmssToSec(duration);
+  if (secs == parseInt("s")) {
+    //console.log("d")
+    throw "error"
+  } else {
+   let arr = [secs];
+  for (let song of player.songs) {
+    arr.push(song.duration);
+    arr.sort((a, b) => (a - b));
+    if ((arr[1] - arr[0]) < range || range === null) {
+      range = arr[1] - arr[0];
+      closest = song;
+    }
+    arr.splice(arr.indexOf(song.duration), 1);
+  }
+  for (let list of player.playlists) {
+    let listLong = playlistDuration(list.id);
+    arr.push(listLong);
+    arr.sort((a, b) => (a - b));
+    if ((arr[1] - arr[0]) < range || range === null) {
+      range = arr[1] - arr[0];
+      closest = list;
+    }
+    arr.splice(arr.indexOf(listLong), 1)
+  }
+  return closest; 
+  }
 }
 
 module.exports = {
